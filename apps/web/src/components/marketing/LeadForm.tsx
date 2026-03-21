@@ -1,27 +1,38 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Send, CheckCircle } from "lucide-react";
 import { type Lang } from "@/lib/i18n";
 import { createClient } from "@/lib/supabase/client";
+import { useMetaEvents } from "@/hooks/useMetaEvents";
 
 interface LeadFormProps {
   lang: Lang;
+  city?: string; // passed from city landing pages for geo-targeted CAPI
 }
 
-const projectTypes = {
-  en: ["Renovation", "New Construction", "Plumbing", "Electrical", "Roofing", "HVAC", "Landscaping", "Other"],
-  fr: ["Rénovation", "Nouvelle construction", "Plomberie", "Électricité", "Toiture", "CVAC", "Aménagement paysager", "Autre"],
-};
+const projectTypes = [
+  "Renovation", "New Construction", "Plumbing", "Electrical",
+  "Roofing", "HVAC", "Landscaping", "Luxury Remodel", "Other"
+];
+const projectTypeValues = [
+  "renovations", "general", "plumbing", "electrical",
+  "roofing", "hvac", "landscaping", "luxury", "other"
+];
 
-const projectTypeValues = ["renovations", "general", "plumbing", "electrical", "roofing", "hvac", "landscaping", "other"];
-
-export default function LeadForm({ lang }: LeadFormProps) {
+export default function LeadForm({ lang, city }: LeadFormProps) {
   const [form, setForm] = useState({ name: "", phone: "", email: "", projectType: "renovations" });
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
+  const meta = useMetaEvents();
+
+  // Fire ViewContent when the form mounts (homeowner audience signal)
+  useEffect(() => {
+    if (city) meta.trackLeadFormView(city);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [city]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -42,9 +53,13 @@ export default function LeadForm({ lang }: LeadFormProps) {
       });
 
       if (dbError) throw dbError;
+
+      // ── Fire Meta Lead event (client + CAPI) ──────────────────────────────
+      await meta.trackLeadSubmitted(form.email, form.phone, city ?? "usa");
+
       setSuccess(true);
     } catch {
-      setError(lang === "en" ? "Something went wrong. Please try again." : "Une erreur est survenue. Veuillez réessayer.");
+      setError("Something went wrong. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -60,13 +75,9 @@ export default function LeadForm({ lang }: LeadFormProps) {
         <div className="w-16 h-16 rounded-full bg-amber-500/20 border border-amber-500/30 flex items-center justify-center mx-auto mb-4">
           <CheckCircle className="w-8 h-8 text-amber-400" />
         </div>
-        <h3 className="font-display font-bold text-xl mb-2">
-          {lang === "en" ? "Request Received!" : "Demande reçue!"}
-        </h3>
+        <h3 className="font-display font-bold text-xl mb-2">Request Received!</h3>
         <p className="text-muted-foreground text-sm">
-          {lang === "en"
-            ? "We'll reach out within 24 hours to discuss your growth strategy."
-            : "Nous vous contacterons dans les 24 heures pour discuter de votre stratégie de croissance."}
+          We&apos;ll match you with the top contractor in your area within 24 hours.
         </p>
       </motion.div>
     );
@@ -74,27 +85,23 @@ export default function LeadForm({ lang }: LeadFormProps) {
 
   return (
     <div className="glass-card cyber-border rounded-2xl p-8">
-      <h3 className="font-display font-bold text-xl mb-2">
-        {lang === "en" ? "Get Your Free Estimate" : "Obtenez votre estimation gratuite"}
-      </h3>
+      <h3 className="font-display font-bold text-xl mb-2">Get Your Free Estimate</h3>
       <p className="text-muted-foreground text-sm mb-6">
-        {lang === "en"
-          ? "Tell us about your business and we'll build your custom growth plan."
-          : "Parlez-nous de votre entreprise et nous créerons votre plan de croissance personnalisé."}
+        Tell us about your project and we&apos;ll connect you with a vetted local contractor.
       </p>
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <input
           type="text"
           required
-          placeholder={lang === "en" ? "Full Name" : "Nom complet"}
+          placeholder="Full Name"
           value={form.name}
           onChange={(e) => setForm({ ...form, name: e.target.value })}
           className="input-amber"
         />
         <input
           type="tel"
-          placeholder={lang === "en" ? "Phone Number" : "Numéro de téléphone"}
+          placeholder="Phone Number"
           value={form.phone}
           onChange={(e) => setForm({ ...form, phone: e.target.value })}
           className="input-amber"
@@ -102,7 +109,7 @@ export default function LeadForm({ lang }: LeadFormProps) {
         <input
           type="email"
           required
-          placeholder={lang === "en" ? "Email Address" : "Adresse courriel"}
+          placeholder="Email Address"
           value={form.email}
           onChange={(e) => setForm({ ...form, email: e.target.value })}
           className="input-amber"
@@ -112,7 +119,7 @@ export default function LeadForm({ lang }: LeadFormProps) {
           onChange={(e) => setForm({ ...form, projectType: e.target.value })}
           className="input-amber"
         >
-          {projectTypes[lang].map((label, i) => (
+          {projectTypes.map((label, i) => (
             <option key={projectTypeValues[i]} value={projectTypeValues[i]} className="bg-background">
               {label}
             </option>
@@ -127,7 +134,7 @@ export default function LeadForm({ lang }: LeadFormProps) {
           ) : (
             <>
               <Send className="w-4 h-4" />
-              {lang === "en" ? "Submit & Book a Call" : "Soumettre et réserver un appel"}
+              Submit & Get Matched
             </>
           )}
         </button>

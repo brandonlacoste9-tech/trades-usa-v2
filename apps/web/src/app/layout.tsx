@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import MetaPixel from "@/components/shared/MetaPixel";
+import { OrganizationSchema } from "@/components/shared/StructuredData";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -46,7 +48,13 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={inter.variable} suppressHydrationWarning>
+      <head>
+        {/* AI SEO: Organization entity — tells LLMs exactly what this brand is */}
+        <OrganizationSchema />
+      </head>
       <body className="min-h-screen bg-background text-foreground antialiased">
+        {/* Meta Pixel — fires on every page, tracks route changes automatically */}
+        <MetaPixel />
         {children}
       </body>
     </html>

@@ -7,6 +7,7 @@ import { getCityBySlug, getAllCitySlugs } from "@/lib/cityData";
 import Navbar from "@/components/shared/Navbar";
 import Footer from "@/components/shared/Footer";
 import LeadForm from "@/components/marketing/LeadForm";
+import { CitySchema } from "@/components/shared/StructuredData";
 
 interface CityPageProps {
   params: Promise<{ lang: string; slug: string }>;
@@ -55,26 +56,14 @@ export default async function CityPage({ params }: CityPageProps) {
 
   const l = lang as Lang;
 
-  // Structured data for local SEO
-  const structuredData = {
-    "@context": "https://schema.org",
-    "@type": "LocalBusiness",
-    name: `Trades-USA — ${city.name}, ${city.stateCode}`,
-    description: city.description,
-    areaServed: {
-      "@type": "City",
-      name: city.name,
-      containedInPlace: { "@type": "State", name: city.state },
-    },
-    url: `https://trades-usa.com/en/city/${slug}`,
-    serviceType: city.topTrades,
-  };
-
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+      {/* AI SEO: Full city schema with LocalBusiness + FAQPage for LLM citations */}
+      <CitySchema
+        cityName={city.name}
+        citySlug={slug}
+        state={city.state}
+        population={city.population ?? 1000000}
       />
       <div className="min-h-screen flex flex-col">
         <Navbar lang={l} />
