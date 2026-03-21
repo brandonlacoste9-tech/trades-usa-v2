@@ -61,16 +61,15 @@ export async function POST(req: NextRequest) {
   // ── Insert via service role (bypasses RLS) ─────────────────────────────────
   try {
     const supabase = getServiceClient();
-    const { error: dbError } = await supabase.from("leads").insert({
+    // Only insert columns confirmed in the live Supabase table.
+    const insertPayload: Record<string, unknown> = {
       name: parsed.data.name,
       email: parsed.data.email,
       phone: parsed.data.phone ?? null,
       project_type: parsed.data.project_type,
-      language: parsed.data.language,
-      source: "web",
-      status: "new",
       city: parsed.data.city ?? null,
-    });
+    };
+    const { error: dbError } = await supabase.from("leads").insert(insertPayload as never);
 
     if (dbError) {
       console.error("[api/leads] Supabase insert error:", dbError.message, dbError.code);
