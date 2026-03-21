@@ -1,61 +1,85 @@
-import { createServerClient, type CookieMethodsServer } from "@supabase/ssr";
+import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
-import { locales, defaultLocale, isValidLang } from "@/lib/i18n";
+import { defaultLocale, isValidLang } from "@/lib/i18n";
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
+  // ── Skip static assets and API routes ──
+  if (
+    pathname.startsWith("/_next") ||
+    pathname.startsWith("/api") ||
+    pathname.includes(".")
+  ) {
+    return NextResponse.next();
+  }
+
   // ── i18n redirect: / → /en ──
   if (pathname === "/") {
-    const acceptLang = request.headers.get("accept-language") ?? "";
-    const preferred = acceptLang.split(",")[0]?.split("-")[0]?.toLowerCase();
-    const lang = isValidLang(preferred ?? "") ? preferred : defaultLocale;
-    return NextResponse.redirect(new URL(`/${lang}`, request.url));
+    return NextResponse.redirect(new URL(`/${defaultLocale}`, request.url));
   }
 
   // ── Validate locale prefix ──
   const segments = pathname.split("/");
-  const potentialLang = segments[1];
-  if (potentialLang && !isValidLang(potentialLang) && !pathname.startsWith("/_next") && !pathname.startsWith("/api") && !pathname.includes(".")) {
-    return NextResponse.redirect(new URL(`/${defaultLocale}${pathname}`, request.url));
+  const potentialLang = segments[1] ?? "";
+  if (potentialLang && !isValidLang(potentialLang)) {
+    return NextResponse.redirect(
+      new URL(`/${defaultLocale}${pathname}`, request.url)
+    );
   }
 
-  // ── Supabase auth session refresh ──
+  const lang = isValidLang(potentialLang) ? potentialLang : defaultLocale;
+
+  // ── Supabase auth session refresh (graceful — skip if env vars missing) ──
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+  if (!supabaseUrl || !supabaseAnonKey) {
+    // No Supabase config — allow all requests through
+    return NextResponse.next();
+  }
+
   let supabaseResponse = NextResponse.next({ request });
 
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
+  try {
+    const supabase = createServerClient(supabaseUrl, supabaseAnonKey, {
       cookies: {
         getAll() {
           return request.cookies.getAll();
         },
-        setAll(cookiesToSet: { name: string; value: string; options?: Record<string, unknown> }[]) {
-          cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value));
+        setAll(cookiesToSet) {
+          cookiesToSet.forEach(({ name, value }) =>
+            request.cookies.set(name, value)
+          );
           supabaseResponse = NextResponse.next({ request });
           cookiesToSet.forEach(({ name, value, options }) =>
-            supabaseResponse.cookies.set(name, value, options)
+            supabaseResponse.cookies.set(name, value, options as Parameters<typeof supabaseResponse.cookies.set>[2])
           );
         },
       },
+    });
+
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    // ── Protect dashboard and settings routes ──
+    const protectedPaths = [`/${lang}/dashboard`, `/${lang}/settings`];
+    const isProtected = protectedPaths.some((p) => pathname.startsWith(p));
+
+    if (isProtected && !user) {
+      return NextResponse.redirect(new URL(`/${lang}/auth`, request.url));
     }
-  );
 
-  const { data: { user } } = await supabase.auth.getUser();
-
-  // ── Protect dashboard and settings routes ──
-  const lang = isValidLang(potentialLang ?? "") ? potentialLang : defaultLocale;
-  const protectedPaths = [`/${lang}/dashboard`, `/${lang}/settings`];
-  const isProtected = protectedPaths.some((p) => pathname.startsWith(p));
-
-  if (isProtected && !user) {
-    return NextResponse.redirect(new URL(`/${lang}/auth`, request.url));
-  }
-
-  // ── Redirect authenticated users away from auth page ──
-  if (pathname === `/${lang}/auth` && user) {
-    return NextResponse.redirect(new URL(`/${lang}/dashboard`, request.url));
+    // ── Redirect authenticated users away from auth page ──
+    if (pathname === `/${lang}/auth` && user) {
+      return NextResponse.redirect(
+        new URL(`/${lang}/dashboard`, request.url)
+      );
+    }
+  } catch {
+    // Supabase error — fail open, let the page render
+    return NextResponse.next();
   }
 
   return supabaseResponse;
