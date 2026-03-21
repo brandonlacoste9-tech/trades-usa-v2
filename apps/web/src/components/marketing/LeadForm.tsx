@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Send, CheckCircle } from "lucide-react";
 import { type Lang } from "@/lib/i18n";
-import { createClient } from "@/lib/supabase/client";
 import { useMetaEvents } from "@/hooks/useMetaEvents";
 
 interface LeadFormProps {
@@ -12,13 +11,14 @@ interface LeadFormProps {
   city?: string; // passed from city landing pages for geo-targeted CAPI
 }
 
+// ── "luxury" removed — not in the DB ProjectType enum
 const projectTypes = [
   "Renovation", "New Construction", "Plumbing", "Electrical",
-  "Roofing", "HVAC", "Landscaping", "Luxury Remodel", "Other"
+  "Roofing", "HVAC", "Landscaping", "Other"
 ];
 const projectTypeValues = [
   "renovations", "general", "plumbing", "electrical",
-  "roofing", "hvac", "landscaping", "luxury", "other"
+  "roofing", "hvac", "landscaping", "other"
 ];
 
 export default function LeadForm({ lang, city }: LeadFormProps) {
@@ -40,25 +40,36 @@ export default function LeadForm({ lang, city }: LeadFormProps) {
     setError("");
 
     try {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const supabase = createClient() as any;
-      const { error: dbError } = await supabase.from("leads").insert({
-        name: form.name,
-        email: form.email,
-        phone: form.phone || null,
-        project_type: form.projectType as any,
-        language: lang,
-        source: "web",
-        status: "new",
+      // ── Insert via server-side API route to bypass Supabase anon RLS ──────
+      const res = await fetch("/api/leads", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: form.name,
+          email: form.email,
+          phone: form.phone || null,
+          project_type: form.projectType,
+          language: lang,
+          source: "web",
+          status: "new",
+          city: city ?? null,
+        }),
       });
 
-      if (dbError) throw dbError;
+      if (!res.ok) {
+        const payload = await res.json().catch(() => ({}));
+        const msg = payload?.error ?? `HTTP ${res.status}`;
+        console.error("[LeadForm] insert error:", msg);
+        throw new Error(msg);
+      }
 
       // ── Fire Meta Lead event (client + CAPI) ──────────────────────────────
       await meta.trackLeadSubmitted(form.email, form.phone, city ?? "usa");
 
       setSuccess(true);
-    } catch {
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : String(err);
+      console.error("[LeadForm] submission failed:", msg);
       setError("Something went wrong. Please try again.");
     } finally {
       setLoading(false);
