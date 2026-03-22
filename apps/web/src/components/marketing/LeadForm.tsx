@@ -11,18 +11,18 @@ interface LeadFormProps {
   city?: string; // passed from city landing pages for geo-targeted CAPI
 }
 
-// ── "luxury" removed — not in the DB ProjectType enum
+// Values must match the `trade_category` enum in the Supabase DB
 const projectTypes = [
-  "Renovation", "New Construction", "Plumbing", "Electrical",
-  "Roofing", "HVAC", "Landscaping", "Other"
+  "General Contractor", "Plumbing", "Electrical", "Roofing",
+  "HVAC", "Landscaping", "Flooring", "Painting", "Other"
 ];
 const projectTypeValues = [
-  "renovations", "general", "plumbing", "electrical",
-  "roofing", "hvac", "landscaping", "other"
+  "general_contractor", "plumbing", "electrical", "roofing",
+  "hvac", "landscaping", "flooring", "painting", "other"
 ];
 
 export default function LeadForm({ lang, city }: LeadFormProps) {
-  const [form, setForm] = useState({ name: "", phone: "", email: "", projectType: "renovations" });
+  const [form, setForm] = useState({ name: "", phone: "", email: "", projectType: "general_contractor" });
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
@@ -49,9 +49,6 @@ export default function LeadForm({ lang, city }: LeadFormProps) {
           email: form.email,
           phone: form.phone || null,
           project_type: form.projectType,
-          language: lang,
-          source: "web",
-          status: "new",
           city: city ?? null,
         }),
       });
