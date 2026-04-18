@@ -26,22 +26,22 @@ interface ScrapedPermit {
 }
 
 const PERMIT_SOURCES = [
-  { city: "toronto", url: "https://www.toronto.ca/city-government/data-research-maps/open-data/open-data-catalogue/development-applications/", label: "Toronto Building Permits" },
-  { city: "montreal", url: "https://donnees.montreal.ca/dataset/permis-de-construire", label: "Montréal Permis" },
-  { city: "vancouver", url: "https://opendata.vancouver.ca/explore/dataset/issued-building-permits/", label: "Vancouver Building Permits" },
-  { city: "calgary", url: "https://data.calgary.ca/Business-and-Economic-Activity/Building-Permits/c2es-76ed", label: "Calgary Building Permits" },
-  { city: "ottawa", url: "https://open.ottawa.ca/datasets/building-permit-applications/", label: "Ottawa Building Permits" },
-  { city: "edmonton", url: "https://data.edmonton.ca/Urban-Planning-Economy/Building-Permits/24uj-dj8v", label: "Edmonton Building Permits" },
+  { city: "houston", url: "https://www.houstontx.gov/codes/prmtstats.html", label: "Houston Permits" },
+  { city: "phoenix", url: "https://www.phoenix.gov/pdd/building-permits/permit-data", label: "Phoenix Permits" },
+  { city: "miami", url: "https://www.miamigov.com/Building-Permits/Check-Permit-Status", label: "Miami Permits" },
+  { city: "atlanta", url: "https://www.atlantaga.gov/government/departments/city-planning/building-permits", label: "Atlanta Permits" },
+  { city: "dallas", url: "https://dallascityhall.com/departments/sustainabledevelopment/buildinginspection/Pages/PermitReports.aspx", label: "Dallas Permits" },
+  { city: "austin", url: "https://www.austintexas.gov/devreview/a_query_detail.jsp", label: "Austin Permits" },
 ];
 
 function detectProjectType(text: string): string | null {
   const lower = text.toLowerCase();
   if (lower.includes("hvac") || lower.includes("heating") || lower.includes("cooling") || lower.includes("furnace")) return "hvac";
-  if (lower.includes("roof") || lower.includes("shingle") || lower.includes("toiture")) return "roofing";
-  if (lower.includes("plumb") || lower.includes("plomberie") || lower.includes("drain")) return "plumbing";
-  if (lower.includes("electric") || lower.includes("électr")) return "electrical";
-  if (lower.includes("landscape") || lower.includes("paysag")) return "landscaping";
-  if (lower.includes("renovat") || lower.includes("rénovation") || lower.includes("addition")) return "renovations";
+  if (lower.includes("roof") || lower.includes("shingle")) return "roofing";
+  if (lower.includes("plumb") || lower.includes("drain")) return "plumbing";
+  if (lower.includes("electric")) return "electrical";
+  if (lower.includes("landscape")) return "landscaping";
+  if (lower.includes("renovat") || lower.includes("addition") || lower.includes("remodel")) return "renovations";
   if (lower.includes("new build") || lower.includes("construction") || lower.includes("foundation")) return "general";
   return null;
 }

@@ -51,19 +51,17 @@ export default async function LogPage({ params }: LogPageProps) {
           {t("dashboard.automationLog", l)}
         </h2>
         <p className="text-muted-foreground text-sm">
-          {l === "en"
-            ? "All automated events: emails, Telegram alerts, Stripe webhooks, and scrape runs."
-            : "Tous les événements automatisés: courriels, alertes Telegram, webhooks Stripe et exécutions de scraping."}
+          All automated events: emails, Telegram alerts, Stripe webhooks, and scrape runs.
         </p>
       </div>
 
       <div className="glass-card cyber-border rounded-xl overflow-hidden">
         <div className="border-b border-white/[0.06] px-5 py-3 flex items-center justify-between">
           <span className="font-display text-sm font-semibold text-foreground">
-            {logs?.length ?? 0} {l === "en" ? "events" : "événements"}
+            {logs?.length ?? 0} events
           </span>
           <span className="badge-amber text-xs">
-            {l === "en" ? "Live" : "En direct"}
+            Live
           </span>
         </div>
 

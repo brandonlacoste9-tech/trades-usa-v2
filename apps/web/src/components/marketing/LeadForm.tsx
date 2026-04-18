@@ -13,16 +13,14 @@ interface LeadFormProps {
 
 // Values must match the `trade_category` enum in the Supabase DB
 const projectTypes = [
-  "General Contractor", "Plumbing", "Electrical", "Roofing",
-  "HVAC", "Landscaping", "Flooring", "Painting", "Other"
+  "HVAC", "Roofing", "Landscaping", "Renovations", "Plumbing", "Electrical", "General", "Other"
 ];
 const projectTypeValues = [
-  "general_contractor", "plumbing", "electrical", "roofing",
-  "hvac", "landscaping", "flooring", "painting", "other"
+  "hvac", "roofing", "landscaping", "renovations", "plumbing", "electrical", "general", "other"
 ];
 
 export default function LeadForm({ lang, city }: LeadFormProps) {
-  const [form, setForm] = useState({ name: "", phone: "", email: "", projectType: "general_contractor" });
+  const [form, setForm] = useState({ name: "", phone: "", email: "", projectType: "general" });
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");

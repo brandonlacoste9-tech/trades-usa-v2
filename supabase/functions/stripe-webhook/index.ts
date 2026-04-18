@@ -12,9 +12,10 @@ const supabase = createClient(
 );
 
 const PLAN_NAMES: Record<string, string> = {
-  price_1TCyD0CzqBvMqSYFhDyf6YDp: "The Web Starter",
-  price_1TCyDeCzqBvMqSYFl3sEMMw2: "The Lead Engine",
-  price_1TCyHwCzqBvMqSYFbv2HxlVh: "The Market Dominator",
+  // Update these to match your actual Stripe Price IDs once created
+  "price_free_placeholder": "Community Free",
+  "price_starter_placeholder": "Lead Starter",
+  "price_engine_placeholder": "Lead Engine",
 };
 
 Deno.serve(async (req) => {

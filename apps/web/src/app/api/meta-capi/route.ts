@@ -26,7 +26,7 @@ export async function POST(req: NextRequest) {
     phone,        // user phone (will be hashed, optional)
     city,         // city slug for geo targeting
     value,        // monetary value (for Purchase/Subscribe events)
-    currency,     // "CAD" for Canada
+    currency,     // "USD" for USA
     event_id,     // deduplication ID (match client-side fbq event_id)
   } = body;
 

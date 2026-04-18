@@ -30,10 +30,10 @@ export default async function AuthPage({ params, searchParams }: AuthPageProps) 
         <div className="section-container h-16 flex items-center justify-between">
           <Link href={`/${l}`} className="flex items-center gap-2.5 group">
             <div className="w-8 h-8 rounded-lg bg-amber-500 flex items-center justify-center">
-              <span className="text-black font-bold text-sm font-display">TC</span>
+              <span className="text-black font-bold text-sm font-display">TU</span>
             </div>
             <span className="font-display font-bold text-base tracking-tight text-foreground group-hover:text-amber-400 transition-colors">
-              TRADES-CANADA
+              TRADES-USA
             </span>
           </Link>
           <Link href={`/${l}`} className="text-muted-foreground text-sm hover:text-foreground transition-colors font-display">

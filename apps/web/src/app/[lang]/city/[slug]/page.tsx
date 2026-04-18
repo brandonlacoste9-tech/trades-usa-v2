@@ -138,7 +138,7 @@ export default async function CityPage({ params }: CityPageProps) {
                       Elite ZIP Code Targeting Available
                     </p>
                     <p className="text-muted-foreground text-sm">
-                      Empire Builder subscribers get exclusive access to luxury permit data in {city.name}&apos;s premium ZIP codes: {city.luxuryZips.slice(0, 3).join(", ")} and more. Average job value exceeds $250,000.
+                      Lead Engine subscribers get exclusive access to luxury permit data in {city.name}&apos;s premium ZIP codes: {city.luxuryZips.slice(0, 3).join(", ")} and more. Average job value exceeds $250,000.
                     </p>
                   </div>
                 </div>

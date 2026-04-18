@@ -24,15 +24,15 @@ const scoreColor = (score: number | null) => {
 };
 
 const statusBadge = (status: string, lang: Lang) => {
-  const map: Record<string, { label: { en: string; fr: string }; cls: string }> = {
-    new: { label: { en: "New", fr: "Nouveau" }, cls: "bg-amber-500/15 text-amber-400 border-amber-500/30" },
-    qualified: { label: { en: "Qualified", fr: "Qualifié" }, cls: "bg-amber-500/10 text-amber-300 border-amber-500/20" },
-    contacted: { label: { en: "Contacted", fr: "Contacté" }, cls: "bg-white/10 text-muted-foreground border-white/10" },
-    converted: { label: { en: "Converted", fr: "Converti" }, cls: "bg-green-500/10 text-green-400 border-green-500/20" },
-    lost: { label: { en: "Lost", fr: "Perdu" }, cls: "bg-destructive/10 text-destructive border-destructive/20" },
+  const map: Record<string, { label: string; cls: string }> = {
+    new: { label: "New", cls: "bg-amber-500/15 text-amber-400 border-amber-500/30" },
+    qualified: { label: "Qualified", cls: "bg-amber-500/10 text-amber-300 border-amber-500/20" },
+    contacted: { label: "Contacted", cls: "bg-white/10 text-muted-foreground border-white/10" },
+    converted: { label: "Converted", cls: "bg-green-500/10 text-green-400 border-green-500/20" },
+    lost: { label: "Lost", cls: "bg-destructive/10 text-destructive border-destructive/20" },
   };
   const s = map[status] ?? map.new;
-  return <span className={`px-2 py-0.5 rounded-full text-xs font-display font-semibold border ${s.cls}`}>{s.label[lang]}</span>;
+  return <span className={`px-2 py-0.5 rounded-full text-xs font-display font-semibold border ${s.cls}`}>{s.label}</span>;
 };
 
 function LeadCard({ lead, lang, userId, isMarket }: { lead: Lead; lang: Lang; userId: string; isMarket: boolean }) {
@@ -151,7 +151,7 @@ export default function LeadList({ leads, marketLeads, lang, userId }: LeadListP
           >
             {t_ === "my"
               ? `${t("dashboard.leads", lang)} (${leads.length})`
-              : `${lang === "en" ? "Market Leads" : "Leads du marché"} (${marketLeads.length})`}
+              : `Market Leads (${marketLeads.length})`}
           </button>
         ))}
       </div>

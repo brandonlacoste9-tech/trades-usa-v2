@@ -59,27 +59,27 @@ export function OrganizationSchema() {
         offers: [
           {
             "@type": "Offer",
-            name: "Professional",
-            price: "499",
+            name: "Community Free",
+            price: "0",
             priceCurrency: "USD",
             billingIncrement: "P1M",
-            description: "Lead alerts for 1 metro area, 2 trade categories, real-time Telegram",
+            description: "Access to Lead Radar, public profile, and community support",
           },
           {
             "@type": "Offer",
-            name: "Market Dominator",
-            price: "899",
+            name: "Lead Starter",
+            price: "149",
             priceCurrency: "USD",
             billingIncrement: "P1M",
-            description: "Multi-city, multi-trade, Lead Radar permit intelligence",
+            description: "Verified leads, instant notifications, and 1 city SEO landing page",
           },
           {
             "@type": "Offer",
-            name: "Empire Builder",
-            price: "1999",
+            name: "Lead Engine",
+            price: "349",
             priceCurrency: "USD",
             billingIncrement: "P1M",
-            description: "All markets, luxury ZIP targeting, dedicated account manager",
+            description: "Exclusive high-intent leads, 5 city landing pages, and lead radar intelligence",
           },
         ],
       },
@@ -103,11 +103,11 @@ export function CitySchema({ cityName, citySlug, state, population }: CitySchema
     },
     {
       q: `What trades are covered in ${cityName}?`,
-      a: `Trades-USA covers all major trades in ${cityName} including roofing, plumbing, HVAC, electrical, general contracting, landscaping, and luxury renovation. Empire Builder plan contractors can target specific luxury ZIP codes in ${cityName} for high-value jobs.`,
+      a: `Trades-USA covers all major trades in ${cityName} including roofing, plumbing, HVAC, electrical, general contracting, landscaping, and luxury renovation. Lead Engine plan contractors can target specific cities in ${cityName} for high-value jobs.`,
     },
     {
       q: `How much does contractor lead generation cost in ${cityName}?`,
-      a: `Trades-USA offers three plans for ${cityName} contractors: Professional at $499 USD/month (1 metro, 2 trades), Market Dominator at $899 USD/month (multi-city, Lead Radar), and Empire Builder at $1,999 USD/month (all markets, luxury ZIP targeting, dedicated account manager). The average contractor closes 2–4 jobs per month, generating $15,000–$80,000 in revenue.`,
+      a: `Trades-USA offers three plans for ${cityName} contractors: Community Free at $0/month, Lead Starter at $149 USD/month (verified leads, 1 city SEO), and Lead Engine at $349 USD/month (exclusive leads, 5 city landing pages, Lead Radar).`,
     },
     {
       q: `What is the Lead Radar for ${cityName}?`,
@@ -142,7 +142,7 @@ export function CitySchema({ cityName, citySlug, state, population }: CitySchema
           audienceType: "Contractors and Trades Businesses",
           numberOfEmployees: { "@type": "QuantitativeValue", value: population },
         },
-        priceRange: "$499–$1,999 USD/month",
+        priceRange: "$0–$349 USD/month",
       },
       {
         "@type": "FAQPage",
@@ -180,8 +180,8 @@ export function HomepageFAQSchema() {
       a: "Contractors receive Telegram push notifications within 60 seconds of a homeowner submitting a job request. This speed-to-lead advantage is the core differentiator — most HomeAdvisor and Angi contractors receive email notifications hours later, by which time homeowners have already called multiple contractors.",
     },
     {
-      q: "What is the Empire Builder plan?",
-      a: "The Empire Builder plan at $1,999 USD/month is Trades-USA's premium tier for high-volume contractors. It includes unlimited access to all US markets, luxury ZIP code targeting (e.g., Beverly Hills 90210, Miami Beach 33139), a dedicated account manager, priority lead alerts, and full Lead Radar permit intelligence across all covered cities.",
+      q: "What is the Lead Engine plan?",
+      a: "The Lead Engine plan at $349 USD/month is Trades-USA's premium tier for high-volume contractors. It includes access to 5 city landing pages, full Lead Radar permit intelligence across your target markets, exclusive high-intent leads, and automated appointment booking.",
     },
     {
       q: "What is the Lead Radar feature?",

@@ -35,10 +35,10 @@ export default function DashboardSidebar({ lang }: DashboardSidebarProps) {
       <div className="h-16 flex items-center px-4 border-b border-white/[0.06]">
         <Link href={`/${lang}`} className="flex items-center gap-2.5 group">
           <div className="w-7 h-7 rounded-lg bg-amber-500 flex items-center justify-center">
-            <span className="text-black font-bold text-xs font-display">TC</span>
+            <span className="text-black font-bold text-xs font-display">TU</span>
           </div>
           <span className="font-display font-bold text-sm tracking-tight text-foreground group-hover:text-amber-400 transition-colors">
-            TRADES-CANADA
+            TRADES-USA
           </span>
         </Link>
       </div>

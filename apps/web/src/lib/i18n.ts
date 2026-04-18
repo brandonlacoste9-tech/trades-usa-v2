@@ -59,9 +59,9 @@ const translations = {
     "pricing.month": "/mo",
     "pricing.popular": "Most Popular",
     "pricing.cta": "Get Started",
-    "pricing.starter.name": "The Professional",
-    "pricing.engine.name": "The Market Dominator",
-    "pricing.dominator.name": "The Empire Builder",
+    "pricing.starter.name": "Community Free",
+    "pricing.engine.name": "Lead Starter",
+    "pricing.dominator.name": "Lead Engine",
 
     // Auth
     "auth.login": "Sign In",

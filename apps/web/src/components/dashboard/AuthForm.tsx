@@ -65,9 +65,7 @@ export default function AuthForm({ lang, planId, initialMode = "login" }: AuthFo
         if (error) throw error;
         setMessage({
           type: "success",
-          text: lang === "en"
-            ? "Reset link sent! Check your email."
-            : "Lien envoyé! Vérifiez votre courriel.",
+          text: "Reset link sent! Check your email.",
         });
       }
     } catch (err: any) {
@@ -99,7 +97,7 @@ export default function AuthForm({ lang, planId, initialMode = "login" }: AuthFo
         </h1>
         {planId && mode === "signup" && (
           <p className="text-amber-400 text-xs font-display mt-1">
-            {lang === "en" ? "Creating account for selected plan" : "Création de compte pour le plan sélectionné"}
+            Creating account for selected plan
           </p>
         )}
       </div>

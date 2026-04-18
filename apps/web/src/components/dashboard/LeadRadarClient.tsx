@@ -46,7 +46,7 @@ export default function LeadRadarClient({ permits, lang }: LeadRadarClientProps)
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
           <input
             type="text"
-            placeholder={lang === "en" ? "Search permits..." : "Rechercher des permis..."}
+            placeholder="Search permits..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="input-amber pl-9 w-full"
@@ -60,7 +60,7 @@ export default function LeadRadarClient({ permits, lang }: LeadRadarClientProps)
             onChange={(e) => setSelectedCity(e.target.value)}
             className="input-amber text-sm"
           >
-            <option value="all">"All Cities"</option>
+            <option value="all">All Cities</option>
             {cityOptions.map((c) => (
               <option key={c.slug} value={c.slug} className="bg-background">
                 {c.name}, {c.stateCode}
@@ -73,7 +73,7 @@ export default function LeadRadarClient({ permits, lang }: LeadRadarClientProps)
             onChange={(e) => setSelectedType(e.target.value)}
             className="input-amber text-sm"
           >
-            <option value="all">{lang === "en" ? "All Types" : "Tous les types"}</option>
+            <option value="all">All Types</option>
             {projectTypes.map((type) => (
               <option key={type} value={type} className="bg-background capitalize">
                 {type.replace("_", " ")}
@@ -86,10 +86,10 @@ export default function LeadRadarClient({ permits, lang }: LeadRadarClientProps)
       {/* Count */}
       <div className="flex items-center justify-between">
         <p className="text-muted-foreground text-sm font-display">
-          {filtered.length} {lang === "en" ? "permits found" : "permis trouvés"}
+          {filtered.length} permits found
         </p>
         <span className="badge-amber text-xs">
-          {lang === "en" ? "Live Data" : "Données en direct"}
+          Live Data
         </span>
       </div>
 
@@ -103,7 +103,7 @@ export default function LeadRadarClient({ permits, lang }: LeadRadarClientProps)
               animate={{ opacity: 1 }}
               className="col-span-full text-center py-12 text-muted-foreground text-sm"
             >
-              {lang === "en" ? "No permits match your filters." : "Aucun permis ne correspond à vos filtres."}
+              No permits match your filters.
             </motion.div>
           ) : (
             filtered.map((permit) => (

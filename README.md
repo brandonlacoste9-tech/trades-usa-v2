@@ -1,6 +1,6 @@
-# Trades-Canada — Monorepo
+# Trades-USA — Monorepo
 
-**The sovereign growth engine for Canadian contractors. Rebuilt from scratch.**
+**The AI-powered growth engine for American trade contractors. Scalable, local, and exclusive.**
 
 ## Architecture
 
@@ -24,23 +24,19 @@ This is a **Turborepo** monorepo with the following workspaces:
 | **Notifications** | Telegram Bot API |
 | **Web Scraping** | Firecrawl API |
 | **Email** | Resend + pgmq queue |
-| **i18n** | Custom bilingual EN/FR routing via Next.js App Router |
 | **Monorepo** | Turborepo |
 
 ## Key Architectural Decisions
 
-### SSR/SSG for SEO Sovereignty
-All public-facing pages (`/`, `/city/:slug`, `/booking`) are **Server Components** with `generateStaticParams()`, ensuring fully rendered HTML is served to search engine crawlers. This directly addresses the SPA anti-pattern in the previous Vite build.
-
-### Bilingual i18n Routing
-URLs are structured as `/{lang}/{page}` (e.g., `/en/city/toronto`, `/fr/city/montreal`). The Next.js middleware handles automatic language detection and redirection. Both EN and FR versions are indexed independently with proper `hreflang` tags.
+### SSR/SSG for SEO Dominance
+All public-facing pages (`/`, `/city/:slug`, `/booking`) are **Server Components** with `generateStaticParams()`, ensuring fully rendered HTML is served to search engine crawlers. This ensures maximum visibility in highly competitive US local markets.
 
 ### Edge Functions as Worker Bees
 The backend automation layer lives entirely in Supabase Edge Functions (Deno runtime):
 - `stripe-webhook` — Handles subscription lifecycle events
 - `create-checkout-session` — Secure server-side Stripe session creation
 - `telegram-lead-alert` — Instant lead notifications to contractors
-- `firecrawl-scrape-permits` — Daily permit data scraping across 6 Canadian cities
+- `firecrawl-scrape-permits` — Daily permit data scraping across high-growth US municipalities
 - `send-email-queue` — pgmq-based reliable email delivery via Resend
 
 ### Dashboard Architecture
@@ -72,17 +68,17 @@ Copy `supabase/.env.example` to `supabase/.env` for Edge Function secrets.
 The `apps/web` Next.js app is designed for **Vercel** deployment with zero configuration.
 Supabase Edge Functions are deployed via `supabase functions deploy`.
 
-## City Coverage
+## US Market Coverage (Initial Launch)
 
-| City | Province | Slug |
+| City | State | Slug |
 | :--- | :--- | :--- |
-| Toronto | Ontario | `toronto` |
-| Montréal | Québec | `montreal` |
-| Vancouver | British Columbia | `vancouver` |
-| Calgary | Alberta | `calgary` |
-| Ottawa | Ontario | `ottawa` |
-| Edmonton | Alberta | `edmonton` |
-| Winnipeg | Manitoba | `winnipeg` |
-| Halifax | Nova Scotia | `halifax` |
-| Saskatoon | Saskatchewan | `saskatoon` |
-| Regina | Saskatchewan | `regina` |
+| Houston | Texas | `houston` |
+| Phoenix | Arizona | `phoenix` |
+| Miami | Florida | `miami` |
+| Atlanta | Georgia | `atlanta` |
+| Dallas | Texas | `dallas` |
+| Charlotte | North Carolina | `charlotte` |
+| Austin | Texas | `austin` |
+| Denver | Colorado | `denver` |
+| Nashville | Tennessee | `nashville` |
+| Orlando | Florida | `orlando` |

@@ -30,9 +30,7 @@ export default async function RadarPage({ params }: RadarPageProps) {
           {t("dashboard.radar", l)}
         </h2>
         <p className="text-muted-foreground text-sm">
-          {l === "en"
-            ? "Real-time market intelligence from permit data across Canada."
-            : "Intelligence de marché en temps réel à partir des données de permis à travers le Canada."}
+          Real-time market intelligence from building permit data across the United States.
         </p>
       </div>
       <LeadRadarClient permits={permits ?? []} lang={l} />

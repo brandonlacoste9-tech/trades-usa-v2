@@ -165,7 +165,7 @@ export default function SettingsClient({ profile, lang, userId }: SettingsClient
                 type="text"
                 value={form.city}
                 onChange={(e) => setForm({ ...form, city: e.target.value })}
-                placeholder={lang === "en" ? "Your city" : "Votre ville"}
+                placeholder="Your city"
                 className="input-amber"
               />
             </div>
@@ -225,9 +225,7 @@ export default function SettingsClient({ profile, lang, userId }: SettingsClient
                     {t("settings.telegram.connected", lang)}
                   </p>
                   <p className="text-muted-foreground text-xs">
-                    {lang === "en"
-                      ? "You will receive instant lead alerts via Telegram."
-                      : "Vous recevrez des alertes de leads instantanées via Telegram."}
+                    You will receive instant lead alerts via Telegram.
                   </p>
                 </div>
               </div>
@@ -238,9 +236,7 @@ export default function SettingsClient({ profile, lang, userId }: SettingsClient
           ) : (
             <div className="space-y-4">
               <p className="text-muted-foreground text-sm">
-                {lang === "en"
-                  ? "Connect Telegram to receive instant lead notifications directly in your chat."
-                  : "Connectez Telegram pour recevoir des notifications de leads instantanées directement dans votre chat."}
+                Connect Telegram to receive instant lead notifications directly in your chat.
               </p>
 
               {telegramCode ? (
@@ -258,13 +254,13 @@ export default function SettingsClient({ profile, lang, userId }: SettingsClient
                     </button>
                   </div>
                   <a
-                    href="https://t.me/TradesCanadaBot"
+                    href="https://t.me/TradesUSABot"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="btn-amber inline-flex"
                   >
                     <MessageCircle className="w-4 h-4" />
-                    {lang === "en" ? "Open Telegram Bot" : "Ouvrir le bot Telegram"}
+                    Open Telegram Bot
                   </a>
                   {polling && (
                     <div className="flex items-center gap-2 text-muted-foreground text-sm">
@@ -301,7 +297,7 @@ export default function SettingsClient({ profile, lang, userId }: SettingsClient
                 <div>
                   <p className="font-display font-bold text-sm text-amber-400">{profile.subscription_tier}</p>
                   <p className="text-muted-foreground text-xs">
-                    {lang === "en" ? "Active subscription" : "Abonnement actif"}
+                    Active subscription
                   </p>
                 </div>
               </div>
